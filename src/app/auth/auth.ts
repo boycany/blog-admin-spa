@@ -1,9 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-auth',
-  imports: [],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
 })
-export class Auth {}
+export class Auth {
+  form = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  });
+  errorStateMatcher = new ErrorStateMatcher();
+  // mode = signal<'signIn' | 'signUp'>('signIn');
+
+  onSubmit() {
+    console.log('this.form.value :>> ', this.form.value);
+  }
+
+  // switchMode() {
+  //   this.mode.set(this.mode() === 'signIn' ? 'signUp' : 'signIn');
+  // }
+}

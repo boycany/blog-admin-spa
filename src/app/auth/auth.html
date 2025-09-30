@@ -1,1 +1,55 @@
-<p>auth works!</p>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Blog Admin SPA</mat-card-title>
+    <mat-card-subtitle>Please sign in with admin account</mat-card-subtitle>
+  </mat-card-header>
+  <div class="icon-container">
+    <mat-icon fontSet="material-icons-outlined">toc</mat-icon>
+  </div>
+  <mat-card-content>
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          required
+          formControlName="email"
+          [errorStateMatcher]="errorStateMatcher"
+        />
+        @let emailCtrl = form.get('email');
+        @if (emailCtrl?.errors?.['required']) {
+          <mat-error> Email is required </mat-error>
+        }
+        @if (emailCtrl?.errors?.['email']) {
+          <mat-error>Invalid email format</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          required
+          formControlName="password"
+          [errorStateMatcher]="errorStateMatcher"
+        />
+        @let passwordCtrl = form.get('password');
+        @if (passwordCtrl?.errors?.['required']) {
+          <mat-error> Password is required </mat-error>
+        }
+        @if (passwordCtrl?.errors?.['minlength']) {
+          <mat-error> Password must be at least 8 characters </mat-error>
+        }
+      </mat-form-field>
+      <button matButton="filled" type="submit" [disabled]="form.invalid">
+        Sign In
+        <!-- {{ mode() === 'signIn' ? 'Sign In' : 'Sign Up' }} -->
+      </button>
+      <!-- <button matButton="elevated" type="button" (click)="switchMode()">
+        {{ mode() === 'signIn' ? 'Create Account' : 'Back to Log In' }}
+      </button> -->
+    </form>
+  </mat-card-content>
+</mat-card>

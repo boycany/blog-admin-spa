@@ -5,6 +5,7 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @use 'vars' as vars;
+@use 'custom' as custom;
 
 html {
   $theme: (
