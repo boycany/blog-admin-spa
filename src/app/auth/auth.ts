@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-auth',
@@ -16,6 +17,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatDividerModule,
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
@@ -26,13 +28,8 @@ export class Auth {
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   errorStateMatcher = new ErrorStateMatcher();
-  // mode = signal<'signIn' | 'signUp'>('signIn');
 
   onSubmit() {
     console.log('this.form.value :>> ', this.form.value);
   }
-
-  // switchMode() {
-  //   this.mode.set(this.mode() === 'signIn' ? 'signUp' : 'signIn');
-  // }
 }
