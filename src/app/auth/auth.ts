@@ -10,6 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../core/services/auth-service';
 import { SnackBarService } from '../shared/components/snack-bar/snack-bar-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -27,16 +28,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './auth.scss',
 })
 export class Auth {
+  //inject
+  private authService = inject(AuthService);
+  private snackbarService = inject(SnackBarService);
+  private router = inject(Router);
+
   // form
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   errorStateMatcher = new ErrorStateMatcher();
-
-  //service
-  private authService = inject(AuthService);
-  private snackbarService = inject(SnackBarService);
 
   //state
   isLoading = signal(false);
@@ -51,11 +53,13 @@ export class Auth {
 
     this.isLoading.set(true);
 
-    this.authService.login(email, password).subscribe((isAuthenticated) => {
+    this.authService.login(email, password).subscribe((result) => {
       this.isLoading.set(false);
+      console.log('result', result);
 
-      if (isAuthenticated) {
+      if (result) {
         this.snackbarService.openSnackBar('success', 'Login successful');
+        this.router.navigate(['/']);
       } else {
         this.snackbarService.openSnackBar('error', 'Login failed');
       }
