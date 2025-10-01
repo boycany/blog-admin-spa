@@ -41,7 +41,16 @@
           <mat-error> Password must be at least 8 characters </mat-error>
         }
       </mat-form-field>
-      <button matButton="filled" type="submit" [disabled]="form.invalid">Sign In</button>
+      <button matButton="filled" type="submit" [disabled]="form.invalid || isLoading()">
+        <div class="button-content">
+          @if (isLoading()) {
+            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span>Signing In</span>
+          } @else {
+            <span>Sign In</span>
+          }
+        </div>
+      </button>
     </form>
   </mat-card-content>
 </mat-card>
