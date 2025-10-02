@@ -1,20 +1,21 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { Account, UserProfile } from './core/services/auth-service';
-import { USER_ACCOUNTS } from './mock-data/user-accounts';
+import { UserProfile } from './core/services/auth-service';
 import { USER_PROFILES } from './mock-data/user-profiles';
+import { Article, Articles } from './article/articles';
+import { ARTICLES } from './mock-data/articles';
 
 export class AppData implements InMemoryDbService {
   // Creates the 'in memory' database
   // Can then issue http requests to retrieve this data,
   // just as if the data were located on a backend server
   createDb(): InMemoryDb {
-    const userAccounts = USER_ACCOUNTS;
     const userProfiles = USER_PROFILES;
-    return { userProfiles };
+    const articles = ARTICLES;
+    return { userProfiles, articles };
   }
 }
 
 interface InMemoryDb {
-  // userAccounts: Account[];
   userProfiles: UserProfile[];
+  articles: Article[];
 }
