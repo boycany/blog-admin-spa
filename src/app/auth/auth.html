@@ -28,11 +28,21 @@
         <mat-label>Password</mat-label>
         <input
           matInput
-          type="password"
+          [type]="isPasswordVisible() ? 'text' : 'password'"
           required
           formControlName="password"
           [errorStateMatcher]="errorStateMatcher"
         />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="isPasswordVisible.set(!isPasswordVisible())"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="!isPasswordVisible()"
+        >
+          <mat-icon>{{ isPasswordVisible() ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
         @let passwordCtrl = form.get('password');
         @if (passwordCtrl?.errors?.['required']) {
           <mat-error> Password is required </mat-error>

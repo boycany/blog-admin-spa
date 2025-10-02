@@ -39,6 +39,7 @@ export class Auth {
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   errorStateMatcher = new ErrorStateMatcher();
+  isPasswordVisible = signal(false);
 
   //state
   isLoading = signal(false);
@@ -58,10 +59,13 @@ export class Auth {
       console.log('result', result);
 
       if (result) {
-        this.snackbarService.openSnackBar('success', 'Login successful');
+        this.snackbarService.openSnackBar(
+          'success',
+          `Welcome back! ${this.authService.currentUser()?.name}`,
+        );
         this.router.navigate(['/']);
       } else {
-        this.snackbarService.openSnackBar('error', 'Login failed');
+        this.snackbarService.openSnackBar('error', 'Please check your email and password');
       }
     });
   }

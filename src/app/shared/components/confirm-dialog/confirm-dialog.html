@@ -1,1 +1,20 @@
-<p>confirm-dialog works!</p>
+<h2 mat-dialog-title>
+  {{ data.title ?? 'Confirm Action' }}
+  @if (data.icon) {
+    <mat-icon>{{ data.icon }}</mat-icon>
+  }
+</h2>
+<mat-dialog-content>
+  <div class="content">{{ data.content ?? 'Are you sure to proceed?' }}</div>
+  @if (data.details) {
+    <ul>
+      @for (detail of data.details; track detail) {
+        <li>{{ detail }}</li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">No</button>
+  <button mat-button mat-dialog-close="ok" cdkFocusInitial>OK</button>
+</mat-dialog-actions>
