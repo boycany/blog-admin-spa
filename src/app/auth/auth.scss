@@ -1,0 +1,55 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--content-height);
+  width: 100%;
+}
+
+mat-card {
+  max-width: 400px;
+  box-shadow: var(--shadow-2);
+
+  mat-card-header {
+    mat-card-subtitle {
+      color: var(--n-50);
+    }
+  }
+
+  mat-divider {
+    margin: 8px 0 24px 0;
+  }
+
+  mat-card-content {
+    padding: 0 16px 24px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      button {
+        .button-content {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        @include mat.progress-spinner-overrides(
+          (
+            active-indicator-color: var(--s-50),
+          )
+        );
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  mat-card {
+    min-width: 400px;
+    max-width: 600px;
+  }
+}

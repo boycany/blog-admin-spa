@@ -1,1 +1,66 @@
-<p>auth works!</p>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Sign In</mat-card-title>
+    <mat-card-subtitle>Please sign in with admin account</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <mat-form-field appearance="outline" [subscriptSizing]="'fixed'">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          required
+          formControlName="email"
+          [errorStateMatcher]="errorStateMatcher"
+        />
+        @let emailCtrl = form.get('email');
+        @if (emailCtrl?.errors?.['required']) {
+          <mat-error> Email is required </mat-error>
+        }
+        @if (emailCtrl?.errors?.['email']) {
+          <mat-error>Invalid email format</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" [subscriptSizing]="'fixed'">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="isPasswordVisible() ? 'text' : 'password'"
+          required
+          formControlName="password"
+          [errorStateMatcher]="errorStateMatcher"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="isPasswordVisible.set(!isPasswordVisible())"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="!isPasswordVisible()"
+        >
+          <mat-icon>{{ isPasswordVisible() ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+        @let passwordCtrl = form.get('password');
+        @if (passwordCtrl?.errors?.['required']) {
+          <mat-error> Password is required </mat-error>
+        }
+        @if (passwordCtrl?.errors?.['minlength']) {
+          <mat-error> Password must be at least 8 characters </mat-error>
+        }
+      </mat-form-field>
+      <button matButton="filled" type="submit" [disabled]="form.invalid || isLoading()">
+        <div class="button-content">
+          @if (isLoading()) {
+            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span>Signing In</span>
+          } @else {
+            <span>Sign In</span>
+          }
+        </div>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

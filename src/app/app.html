@@ -1,1 +1,14 @@
+<mat-toolbar>
+  <mat-icon>toc</mat-icon>
+  <span>Blog Admin SPA</span>
+  <span class="spacer"></span>
+  @if (currentUser()) {
+    <button matButton aria-label="user name button">
+      {{ userName() }}
+    </button>
+    <button matIconButton aria-label="logout button" matTooltip="Logout" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
+</mat-toolbar>
 <router-outlet />

@@ -1,0 +1,24 @@
+:host {
+  mat-toolbar {
+    box-shadow: var(--shadow-2);
+    background-color: var(--t-90);
+    color: var(--p);
+
+    mat-icon:first-child {
+      margin-right: 16px;
+      font-size: 32px;
+    }
+
+    button {
+      color: var(--p);
+    }
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  button[matButton] {
+    margin-right: 4px;
+  }
+}

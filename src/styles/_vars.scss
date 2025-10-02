@@ -54,12 +54,17 @@
   @include list($neutral, 'n');
   @include list($neutral-variant, 'nv');
 
+  // Elevation shadows
   --shadow-0: var(--mat-sys-level0);
   --shadow-1: var(--mat-sys-level1);
   --shadow-2: var(--mat-sys-level2);
   --shadow-3: var(--mat-sys-level3);
   --shadow-4: var(--mat-sys-level4);
   --shadow-5: var(--mat-sys-level5);
+
+  // Custom sizes
+  --toolbar-height: var(--mat-toolbar-standard-height, 64px);
+  --content-height: calc(100vh - var(--toolbar-height));
 }
 
 /**
