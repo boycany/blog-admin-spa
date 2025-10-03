@@ -12,6 +12,8 @@ export class ArticlesService {
   });
   articles = computed(() => this.articlesResource.value() ?? []);
   articlesEff = effect(() => console.log('this.articles() :>> ', this.articles()));
+  isLoading = computed(() => this.articlesResource.isLoading());
+  isLoadingEff = effect(() => console.log('this.isLoading() :>> ', this.isLoading()));
 
   constructor() {
     console.log('ArticlesService initialized');

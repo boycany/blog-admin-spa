@@ -1,1 +1,26 @@
-<p>articles works!</p>
+<app-table
+  [columns]="columns"
+  [dataSource]="dataSource"
+  [isLoading]="isLoading()"
+  [(filterValue)]="filterValue"
+>
+  <button
+    mat-fab
+    extended="true"
+    toolbarActions
+    matTooltip="Create New Article"
+    class="toolbar-button"
+    [disabled]="isLoading()"
+  >
+    <mat-icon>add_circle</mat-icon>Create
+  </button>
+</app-table>
+
+<ng-template #actionsTemplate let-element="value">
+  <button matIconButton (click)="onEdit(element)" matTooltip="Edit">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button matIconButton (click)="onDelete(element)" matTooltip="Delete">
+    <mat-icon>delete</mat-icon>
+  </button>
+</ng-template>

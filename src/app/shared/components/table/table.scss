@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  width: 90%;
+  margin: auto;
+  padding: 32px 0;
+
+  .toolbar-container {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0 16px;
+
+    .table-search {
+      width: 100%;
+
+      button {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+
+  .table-container {
+    overflow: auto;
+    padding: 16px;
+    height: calc(var(--content-height) - 64px - 76px - 32px);
+    // 64px is app-table padding top + bottom
+    // 76px is search bar height
+    // 32px is table-container padding top + bottom
+
+    .spinner-container {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    mat-table {
+      box-shadow: var(--shadow-2);
+    }
+
+    .no-data-row-text {
+      padding-left: 1.25rem;
+    }
+  }
+}
