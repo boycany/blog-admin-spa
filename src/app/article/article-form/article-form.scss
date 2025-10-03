@@ -1,0 +1,16 @@
+form {
+  display: grid;
+  gap: 16px;
+
+  mat-form-field {
+    grid-column: span 12;
+  }
+
+  .button-row {
+    grid-column: span 12;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+}

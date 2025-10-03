@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { convertTimeToLocal } from '../shared/helpers/time-transform';
+import { MatDialog } from '@angular/material/dialog';
+import { ArticleForm } from './article-form/article-form';
 
 @Component({
   selector: 'app-articles',
@@ -26,6 +28,7 @@ import { convertTimeToLocal } from '../shared/helpers/time-transform';
   providers: [ArticlesService],
 })
 export class Articles implements AfterViewInit, OnInit {
+  private dialog = inject(MatDialog);
   private articlesService = inject(ArticlesService);
   isLoading = this.articlesService.isLoading;
   articles$ = toObservable(this.articlesService.articles);
@@ -80,6 +83,17 @@ export class Articles implements AfterViewInit, OnInit {
     ];
   }
 
+  onCreate() {
+    console.log('Create new article');
+    this.dialog.open(ArticleForm, {
+      width: '600px',
+
+      data: {
+        formType: 'New',
+      },
+    });
+  }
+
   // TODO: Maybe we don't need actions column, just click the row to view article detail.
   // Also make two action buttons in dialog: Edit and Delete
   onEdit(article: Article) {
@@ -92,7 +106,7 @@ export class Articles implements AfterViewInit, OnInit {
 }
 
 export interface Article {
-  id: number;
+  id: string;
   title: string;
   content: string;
   author: string;

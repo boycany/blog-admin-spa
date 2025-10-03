@@ -4,7 +4,14 @@
   [isLoading]="isLoading()"
   [(filterValue)]="filterValue"
 >
-  <button mat-fab extended="false" toolbarActions matTooltip="New Post" [disabled]="isLoading()">
+  <button
+    mat-fab
+    extended="false"
+    toolbarActions
+    matTooltip="New Post"
+    [disabled]="isLoading()"
+    (click)="onCreate()"
+  >
     <mat-icon>post_add</mat-icon>
   </button>
 </app-table>

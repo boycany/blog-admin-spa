@@ -1,8 +1,9 @@
 import { Article } from '../article/articles';
+import { v4 as uuidv4 } from 'uuid';
 
 export const ARTICLES: Article[] = [
   {
-    id: 1,
+    id: uuidv4(),
     title: 'Angular Signals: The What and Why of Signals',
     content: `A signal is a container that holds a value.
       Unlike normal variables, a signal provides a notification when it’s changed.
@@ -14,7 +15,7 @@ export const ARTICLES: Article[] = [
     modifiedDate: '2025-10-02T12:00:00Z',
   },
   {
-    id: 2,
+    id: uuidv4(),
     title: 'Why Dependency Injection Exists?',
     content: `In nestJS, Controller, Service, Repository, there is a very clear dependency
       or hierarchy between these different classes. The service depends upon the repository to work correctly.
