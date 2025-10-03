@@ -80,6 +80,8 @@ export class Articles implements AfterViewInit, OnInit {
     ];
   }
 
+  // TODO: Maybe we don't need actions column, just click the row to view article detail.
+  // Also make two action buttons in dialog: Edit and Delete
   onEdit(article: Article) {
     console.log('Edit article', article);
   }
