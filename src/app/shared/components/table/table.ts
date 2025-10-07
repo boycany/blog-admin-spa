@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Component, computed, input, model, output, TemplateRef, viewChild } from '@angular/core';
+import { Component, computed, input, model, TemplateRef, viewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { debounce } from '../../helpers/debounce';

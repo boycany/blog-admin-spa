@@ -8,7 +8,7 @@
     mat-fab
     extended="false"
     toolbarActions
-    matTooltip="New Post"
+    matTooltip="Create New"
     [disabled]="isLoading()"
     (click)="onCreate()"
   >
@@ -17,6 +17,9 @@
 </app-table>
 
 <ng-template #actionsTemplate let-element="value">
+  <button matIconButton (click)="onView(element)" matTooltip="View">
+    <mat-icon>article</mat-icon>
+  </button>
   <button matIconButton (click)="onEdit(element)" matTooltip="Edit">
     <mat-icon>edit</mat-icon>
   </button>
