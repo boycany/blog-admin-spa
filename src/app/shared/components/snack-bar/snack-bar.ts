@@ -23,7 +23,7 @@ import {
 })
 export class SnackBar {
   private snackBarRef = inject(MatSnackBarRef);
-  data: SnackBarData = inject(MAT_SNACK_BAR_DATA);
+  protected readonly data: SnackBarData = inject(MAT_SNACK_BAR_DATA);
 
   onDismiss() {
     this.snackBarRef.dismissWithAction();

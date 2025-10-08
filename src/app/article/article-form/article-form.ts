@@ -56,7 +56,6 @@ export class ArticleForm {
   }
 
   protected onSubmit() {
-    console.log('this.form.value', this.form.value);
     this.formSubmit.emit(this.form.value as ArticleFormOutput);
     this.isLoading.set(true);
   }

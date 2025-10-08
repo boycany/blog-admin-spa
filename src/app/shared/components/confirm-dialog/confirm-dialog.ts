@@ -23,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './confirm-dialog.scss',
 })
 export class ConfirmDialog {
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  protected readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 }
 
 export interface DialogData {

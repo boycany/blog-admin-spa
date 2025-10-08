@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { convertTimeToLocal } from '../shared/helpers/time-transform';
 import { MatDialog } from '@angular/material/dialog';
-import { ArticleForm } from './article-form/article-form';
+import { ArticleForm, ArticleFormInput } from './article-form/article-form';
 import { ArticleView } from './article-view/article-view';
 import { catchError, EMPTY, filter, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '../shared/components/snack-bar/snack-bar-service';
@@ -95,12 +95,24 @@ export class Articles implements AfterViewInit, OnInit {
     ];
   }
 
-  protected onCreate() {
+  private openDialog(data: ArticleFormInput) {
     const dialogRef = this.dialog.open(ArticleForm, {
       width: '600px',
-      data: {
-        formType: 'New',
-      },
+      data,
+      disableClose: true,
+    });
+
+    dialogRef
+      .keydownEvents()
+      .pipe(filter((event) => event.key === 'Escape'))
+      .subscribe(() => dialogRef.close());
+
+    return dialogRef;
+  }
+
+  protected onCreate() {
+    const dialogRef = this.openDialog({
+      formType: 'New',
     });
 
     dialogRef.componentInstance.formSubmit.subscribe((formValue) => {
@@ -132,13 +144,11 @@ export class Articles implements AfterViewInit, OnInit {
   }
 
   protected onEdit(article: Article) {
-    const dialogRef = this.dialog.open(ArticleForm, {
-      width: '600px',
-      data: {
-        formType: 'Edit',
-        article,
-      },
+    const dialogRef = this.openDialog({
+      formType: 'Edit',
+      article,
     });
+
     dialogRef.componentInstance.formSubmit.subscribe((formValue) => {
       const body: Article = {
         ...formValue,

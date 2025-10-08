@@ -10,17 +10,14 @@
 }
 
 .close-button {
-  // color: #767872 !important;
   color: var(--n-90) !important;
 }
 
 .mat-mdc-icon-button:hover {
   background-color: var(--n-95) !important;
-  // background-color: #f6fbee !important;
   transition: background-color 0.3s ease-in-out;
 }
 
 .mat-mdc-icon-button:hover .mat-icon {
-  // color: #485642 !important;
   color: var(--nv-60) !important;
 }

@@ -50,11 +50,11 @@ export class AuthService {
     );
   }
 
-  saveInLocalStorage() {
+  private saveInLocalStorage() {
     localStorage.setItem('blog-admin-user', JSON.stringify(this._currentUser()));
   }
 
-  loadFromLocalStorage() {
+  private loadFromLocalStorage() {
     const userData = localStorage.getItem('blog-admin-user');
     if (userData) {
       this._currentUser.set(JSON.parse(userData));
