@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ formType() }} Post</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+      @if (form.get('title')?.hasError('required')) {
+        <mat-error> Title is required </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" rows="10"></textarea>
+      @if (form.get('content')?.hasError('required')) {
+        <mat-error> Content is required </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- tags column -->
+    <mat-form-field appearance="fill">
+      <mat-label>Tags</mat-label>
+      <input matInput formControlName="tags" />
+      <mat-hint>Comma-separated tags (e.g., tag1, tag2, tag3)</mat-hint>
+    </mat-form-field>
+
+    <!-- status use MatRadio -->
+    <mat-radio-group aria-label="Select an publication status" formControlName="status">
+      <mat-radio-button value="draft">Draft</mat-radio-button>
+      <mat-radio-button value="public">Public</mat-radio-button>
+    </mat-radio-group>
+
+    <div class="button-row">
+      <button mat-flat-button (click)="onSubmit()" [disabled]="false">Submit</button>
+      <button mat-raised-button mat-dialog-close (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</mat-dialog-content>

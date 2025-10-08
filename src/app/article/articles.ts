@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   inject,
+  linkedSignal,
   OnInit,
   signal,
   TemplateRef,
@@ -17,6 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { convertTimeToLocal } from '../shared/helpers/time-transform';
+import { MatDialog } from '@angular/material/dialog';
+import { ArticleForm } from './article-form/article-form';
+import { ArticleView } from './article-view/article-view';
+import { catchError, EMPTY, filter, switchMap, tap } from 'rxjs';
+import { SnackBarService } from '../shared/components/snack-bar/snack-bar-service';
+import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-articles',
@@ -26,15 +33,20 @@ import { convertTimeToLocal } from '../shared/helpers/time-transform';
   providers: [ArticlesService],
 })
 export class Articles implements AfterViewInit, OnInit {
+  private dialog = inject(MatDialog);
   private articlesService = inject(ArticlesService);
-  isLoading = this.articlesService.isLoading;
+  private snackbarService = inject(SnackBarService);
+
+  //state
+  isLoading = linkedSignal(() => this.articlesService.isLoading());
+
+  //data
   articles$ = toObservable(this.articlesService.articles);
 
   // table config
   columns: TableColumn<Article>[] = [];
   dataSource = new MatTableDataSource<Article>();
   filterValue = signal('');
-  filterValueEff = effect(() => console.log('this.filterValue() :>> ', this.filterValue()));
 
   // view child
   tableComponent = viewChild.required(Table);
@@ -80,19 +92,62 @@ export class Articles implements AfterViewInit, OnInit {
     ];
   }
 
-  // TODO: Maybe we don't need actions column, just click the row to view article detail.
-  // Also make two action buttons in dialog: Edit and Delete
+  onCreate() {
+    console.log('Create new article');
+    this.dialog.open(ArticleForm, {
+      width: '600px',
+      data: {
+        formType: 'New',
+      },
+    });
+  }
+
   onEdit(article: Article) {
     console.log('Edit article', article);
   }
 
   onDelete(article: Article) {
-    console.log('Delete article', article);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Delete Article',
+        content: `Are you sure you want to delete the article?`,
+        details: [`Title: ${article.title}`, `Author: ${article.author}`],
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result) => !!result),
+        switchMap(() => {
+          this.isLoading.set(true);
+          return this.articlesService.deleteArticle(article.id).pipe(
+            tap(() => {
+              this.snackbarService.openSnackBar('success', 'Article deleted successfully');
+              this.articlesService.reloadArticles();
+            }),
+            catchError((error) => {
+              this.snackbarService.openSnackBar('error', error);
+              this.isLoading.set(false);
+              return EMPTY;
+            }),
+          );
+        }),
+      )
+      .subscribe();
+  }
+
+  onView(article: Article) {
+    console.log('View article', article);
+    this.dialog.open(ArticleView, {
+      width: '600px',
+      data: { ...article, createdDate: convertTimeToLocal(article.createdDate, 'FF') },
+    });
   }
 }
 
 export interface Article {
-  id: number;
+  id: string;
   title: string;
   content: string;
   author: string;

@@ -4,12 +4,22 @@
   [isLoading]="isLoading()"
   [(filterValue)]="filterValue"
 >
-  <button mat-fab extended="false" toolbarActions matTooltip="New Post" [disabled]="isLoading()">
+  <button
+    mat-fab
+    extended="false"
+    toolbarActions
+    matTooltip="Create New"
+    [disabled]="isLoading()"
+    (click)="onCreate()"
+  >
     <mat-icon>post_add</mat-icon>
   </button>
 </app-table>
 
 <ng-template #actionsTemplate let-element="value">
+  <button matIconButton (click)="onView(element)" matTooltip="View">
+    <mat-icon>article</mat-icon>
+  </button>
   <button matIconButton (click)="onEdit(element)" matTooltip="Edit">
     <mat-icon>edit</mat-icon>
   </button>

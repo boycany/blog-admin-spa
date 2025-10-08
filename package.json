@@ -38,7 +38,8 @@
     "angular-in-memory-web-api": "^0.20.0",
     "luxon": "^3.7.2",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@angular/build": "^20.3.2",
