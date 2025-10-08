@@ -9,7 +9,6 @@
 
   $secondary: map.get($primary, 'secondary');
   $neutral: map.get($primary, 'neutral');
-  // $neutral-variant: map.get($primary, 'variant');
   $neutral-variant: map.get($primary, 'neutral-variant');
   $error: map.get($primary, 'error');
 
