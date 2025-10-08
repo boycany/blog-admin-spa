@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>{{ data.formType }} Post</h2>
+<form [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+      @if (form.get('title')?.hasError('required')) {
+        <mat-error> Title is required </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Author</mat-label>
+      <input matInput formControlName="author" />
+      @if (form.get('author')?.hasError('required')) {
+        <mat-error> Author is required </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" rows="10"></textarea>
+      @if (form.get('content')?.hasError('required')) {
+        <mat-error> Content is required </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Enter Tags" formControlName="tags">
+        @for (tag of form.get('tags')?.value || []; track tag) {
+          <mat-chip-row (removed)="removeTag(tag)">
+            {{ tag }}
+            <button matChipRemove [attr.aria-label]="'remove ' + tag">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        }
+      </mat-chip-grid>
+      <input
+        #chipInput
+        placeholder="New Tag..."
+        [matChipInputFor]="chipGrid"
+        (matChipInputTokenEnd)="addTag($event)"
+      />
+      @if (chipInput.value) {
+        <mat-hint>Press "Enter" to add a tag</mat-hint>
+      }
+      <!-- @if (form.get('tags')?.hasError('required')) {
+        <mat-error> At least one tag is required </mat-error>
+      } -->
+    </mat-form-field>
+    <mat-radio-group aria-label="Select an publication status" formControlName="status">
+      <mat-radio-button value="draft">Draft</mat-radio-button>
+      <mat-radio-button value="published">Public</mat-radio-button>
+    </mat-radio-group>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button (click)="onSubmit()" [disabled]="form.invalid || isLoading()">
+      <app-submit-button [isLoading]="isLoading()"></app-submit-button>
+    </button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

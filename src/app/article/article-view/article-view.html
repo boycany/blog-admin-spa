@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<small class="dialog-subtitle">
+  <span>{{ data.author }}</span> ・ <span> {{ data.createdDate }}</span>
+</small>
+<mat-dialog-content>
+  <p>{{ data.content }}</p>
+  <div class="chips">
+    @for (tag of data.tags; track tag) {
+      <mat-chip>#{{ tag }}</mat-chip>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton mat-dialog-close>Close</button>
+</mat-dialog-actions>
