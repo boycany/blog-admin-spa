@@ -52,14 +52,11 @@
         }
       </mat-form-field>
       <button matButton="filled" type="submit" [disabled]="form.invalid || isLoading()">
-        <div class="button-content">
-          @if (isLoading()) {
-            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
-            <span>Signing In</span>
-          } @else {
-            <span>Sign In</span>
-          }
-        </div>
+        <app-submit-button
+          [isLoading]="isLoading()"
+          [loadingText]="'Signing In'"
+          [defaultText]="'Sign In'"
+        ></app-submit-button>
       </button>
     </form>
   </mat-card-content>

@@ -29,20 +29,6 @@ mat-card {
       display: flex;
       flex-direction: column;
       gap: 8px;
-
-      button {
-        .button-content {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        @include mat.progress-spinner-overrides(
-          (
-            active-indicator-color: var(--s-50),
-          )
-        );
-      }
     }
   }
 }

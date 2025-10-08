@@ -11,6 +11,7 @@ import { AuthService } from '../core/services/auth-service';
 import { SnackBarService } from '../shared/components/snack-bar/snack-bar-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { SubmitButton } from '../shared/components/submit-button/submit-button';
 
 @Component({
   selector: 'app-auth',
@@ -23,6 +24,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatDividerModule,
     MatProgressSpinnerModule,
+    SubmitButton,
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
@@ -34,17 +36,17 @@ export class Auth {
   private router = inject(Router);
 
   // form
-  form = new FormGroup({
+  protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
-  errorStateMatcher = new ErrorStateMatcher();
-  isPasswordVisible = signal(false);
+  protected readonly errorStateMatcher = new ErrorStateMatcher();
+  protected readonly isPasswordVisible = signal(false);
 
   //state
-  isLoading = signal(false);
+  protected readonly isLoading = signal(false);
 
-  onSubmit() {
+  protected onSubmit() {
     const { email, password } = this.form.value;
 
     if (!email || !password) {
@@ -56,7 +58,6 @@ export class Auth {
 
     this.authService.login(email, password).subscribe((result) => {
       this.isLoading.set(false);
-      console.log('result', result);
 
       if (result) {
         this.snackbarService.openSnackBar(

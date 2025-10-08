@@ -1,7 +1,7 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { UserProfile } from './core/services/auth-service';
 import { USER_PROFILES } from './mock-data/user-profiles';
-import { Article, Articles } from './article/articles';
+import { Article } from './article/articles';
 import { ARTICLES } from './mock-data/articles';
 
 export class AppData implements InMemoryDbService {

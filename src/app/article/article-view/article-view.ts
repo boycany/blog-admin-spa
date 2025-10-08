@@ -1,10 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Article } from '../articles';
 import { MatChip } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';

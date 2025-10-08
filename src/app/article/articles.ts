@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  effect,
   inject,
   linkedSignal,
   OnInit,
@@ -24,6 +23,8 @@ import { ArticleView } from './article-view/article-view';
 import { catchError, EMPTY, filter, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '../shared/components/snack-bar/snack-bar-service';
 import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog';
+import { v4 as uuidv4 } from 'uuid';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-articles',
@@ -33,24 +34,25 @@ import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialo
   providers: [ArticlesService],
 })
 export class Articles implements AfterViewInit, OnInit {
-  private dialog = inject(MatDialog);
+  // services
   private articlesService = inject(ArticlesService);
+  private dialog = inject(MatDialog);
   private snackbarService = inject(SnackBarService);
 
   //state
-  isLoading = linkedSignal(() => this.articlesService.isLoading());
+  protected readonly isLoading = linkedSignal(() => this.articlesService.isLoading());
 
   //data
-  articles$ = toObservable(this.articlesService.articles);
+  private articles$ = toObservable(this.articlesService.articles);
 
   // table config
-  columns: TableColumn<Article>[] = [];
-  dataSource = new MatTableDataSource<Article>();
-  filterValue = signal('');
+  protected columns: TableColumn<Article>[] = [];
+  protected dataSource = new MatTableDataSource<Article>();
+  protected filterValue = signal('');
 
   // view child
-  tableComponent = viewChild.required(Table);
-  actionsTemplate = viewChild.required<TemplateRef<Article>>('actionsTemplate');
+  private tableComponent = viewChild.required(Table);
+  private actionsTemplate = viewChild.required<TemplateRef<Article>>('actionsTemplate');
 
   constructor() {
     this.articles$.pipe(takeUntilDestroyed()).subscribe((articles) => {
@@ -59,9 +61,10 @@ export class Articles implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    // Load columns when view initialized, cause it uses view child for action buttons
     this.columns = this.setColumns();
 
-    /** Set filter only for title */
+    // Set filter only for title
     this.dataSource.filterPredicate = (data: Article, filter: string) => {
       const title = data.title.toLowerCase();
       filter = filter.trim().toLowerCase();
@@ -73,7 +76,7 @@ export class Articles implements AfterViewInit, OnInit {
     this.dataSource.sort = this.tableComponent().sort();
   }
 
-  setColumns(): TableColumn<Article>[] {
+  private setColumns(): TableColumn<Article>[] {
     return [
       { columnDef: 'title', header: 'Title', cell: (element: Article) => element.title },
       { columnDef: 'author', header: 'Author', cell: (element: Article) => element.author },
@@ -92,21 +95,76 @@ export class Articles implements AfterViewInit, OnInit {
     ];
   }
 
-  onCreate() {
-    console.log('Create new article');
-    this.dialog.open(ArticleForm, {
+  protected onCreate() {
+    const dialogRef = this.dialog.open(ArticleForm, {
       width: '600px',
       data: {
         formType: 'New',
       },
     });
+
+    dialogRef.componentInstance.formSubmit.subscribe((formValue) => {
+      const now = DateTime.now().toUTC().toString();
+
+      const body: Article = {
+        id: uuidv4(),
+        createdDate: now,
+        modifiedDate: now,
+        ...formValue,
+      };
+
+      this.articlesService
+        .createArticle(body)
+        .pipe(
+          tap(() => {
+            this.snackbarService.openSnackBar('success', 'Article created successfully');
+            this.articlesService.reloadArticles();
+            dialogRef.close();
+          }),
+          catchError((error) => {
+            this.snackbarService.openSnackBar('error', error);
+            dialogRef.componentInstance.isLoading.set(false);
+            return EMPTY;
+          }),
+        )
+        .subscribe();
+    });
   }
 
-  onEdit(article: Article) {
-    console.log('Edit article', article);
+  protected onEdit(article: Article) {
+    const dialogRef = this.dialog.open(ArticleForm, {
+      width: '600px',
+      data: {
+        formType: 'Edit',
+        article,
+      },
+    });
+    dialogRef.componentInstance.formSubmit.subscribe((formValue) => {
+      const body: Article = {
+        ...formValue,
+        id: article.id,
+        createdDate: article.createdDate,
+        modifiedDate: DateTime.now().toUTC().toString(),
+      };
+      this.articlesService
+        .updateArticle(body)
+        .pipe(
+          tap(() => {
+            this.snackbarService.openSnackBar('success', 'Article updated successfully');
+            this.articlesService.reloadArticles();
+            dialogRef.close();
+          }),
+          catchError((error) => {
+            this.snackbarService.openSnackBar('error', error);
+            dialogRef.componentInstance.isLoading.set(false);
+            return EMPTY;
+          }),
+        )
+        .subscribe();
+    });
   }
 
-  onDelete(article: Article) {
+  protected onDelete(article: Article) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       data: {
         title: 'Delete Article',
@@ -137,8 +195,7 @@ export class Articles implements AfterViewInit, OnInit {
       .subscribe();
   }
 
-  onView(article: Article) {
-    console.log('View article', article);
+  protected onView(article: Article) {
     this.dialog.open(ArticleView, {
       width: '600px',
       data: { ...article, createdDate: convertTimeToLocal(article.createdDate, 'FF') },
