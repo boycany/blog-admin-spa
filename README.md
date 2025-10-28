@@ -8,13 +8,13 @@ The system provides the following test account for login:
 
 - **Email**: `admin@example.com`
 - **Password**: `1QAZ2wsx`
-- **Role**: Administrator
 
 > Note: This uses mock data with In-Memory Web API. Data will reset after page refresh.
 
 ## 📋 Project Features
 
-- **Authentication System**: Login/logout functionality with route guard protection
+- **Authentication System**:
+  - Login/logout functionality with route guard protection
 - **Article Management**:
   - Article list display (with pagination, sorting, search)
   - Create articles
