@@ -2,6 +2,16 @@
 
 A comprehensive blog management system built with Angular 20, providing complete article management features including create, edit, delete, view, and status management functionality.
 
+## 🔐 Test Login Credentials
+
+The system provides the following test account for login:
+
+- **Email**: `admin@example.com`
+- **Password**: `1QAZ2wsx`
+- **Role**: Administrator
+
+> Note: This uses mock data with In-Memory Web API. Data will reset after page refresh.
+
 ## 📋 Project Features
 
 - **Authentication System**: Login/logout functionality with route guard protection
@@ -95,16 +105,6 @@ npm run watch
 # or
 ng build --watch --configuration development
 ```
-
-## 🔐 Test Login Credentials
-
-The system provides the following test account for login:
-
-- **Email**: `admin@example.com`
-- **Password**: `1QAZ2wsx`
-- **Role**: Administrator
-
-> Note: This uses mock data with In-Memory Web API. Data will reset after page refresh.
 
 ## 📝 Additional Information
 
